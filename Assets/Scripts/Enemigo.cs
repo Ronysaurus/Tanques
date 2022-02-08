@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Enemigo : MonoBehaviour 
+public class Enemigo : MonoBehaviour
 {
     public GameObject Bala;
     public int ScoreValue, FireDistance;
     public float Reload_Time;
 
-    private Transform [] WanderPath;
+    private Transform[] WanderPath;
     private Transform Tower, PlayerPosition;
     private float Reload = 0, RandomX = 0, RandomZ = 0, StopDistance;
     private UnityEngine.AI.NavMeshAgent Navigation;
@@ -15,10 +14,10 @@ public class Enemigo : MonoBehaviour
     private Vector3 LastSeen;
     private int Shots = 0;
 
-	void Start () 
+    private void Start()
     {
         //Iniciar Zona de deambulacion
-        WanderPath = new Transform [2];
+        WanderPath = new Transform[2];
         WanderPath[0] = GameObject.Find("Campo/Spawn point").transform;
         WanderPath[1] = GameObject.Find("Campo/Spawn point 3").transform;
         //Obtener NavMeshAgent
@@ -32,20 +31,22 @@ public class Enemigo : MonoBehaviour
 
         RandomX = this.transform.position.x;
         RandomZ = this.transform.position.z;
-	}
-	//-------------------------------------------------------------------
-	void Update () 
+    }
+
+    //-------------------------------------------------------------------
+    private void Update()
     {
         //Buscar al jugador
         Wander();
-	}
+    }
+
     //--------------------------------------------------------------------
-    void Wander()
+    private void Wander()
     {
         if (!IsFollowing)
         {
             //Al llegar a la direccion al azar
-            if (Vector3.Distance(this.transform.position, new Vector3(RandomX, this.transform.position.y , RandomZ))
+            if (Vector3.Distance(this.transform.position, new Vector3(RandomX, this.transform.position.y, RandomZ))
                 <= StopDistance + 1.5f)
             {
                 //Da una direccion nueva
@@ -55,14 +56,13 @@ public class Enemigo : MonoBehaviour
             //Ir a la direccion al azar
             Navigation.SetDestination(new Vector3(RandomX, this.transform.position.y, RandomZ));
             //Si ve al jugador lo sigue
-            RaycastHit hit;
             //Debug.DrawRay(transform.position+Vector3.up, Vector3.Normalize(PlayerPosition.position - transform.position)*10,Color.blue,0.01f);
-             if (Physics.Raycast(this.transform.position+Vector3.up, PlayerPosition.position - this.transform.position, out hit, 
-                                 FireDistance+10) && hit.collider.tag == "Player")
-             {
-                 //Indicar que esta siguiendo al jugador
-                  IsFollowing = true;
-             }
+            if (Physics.Raycast(this.transform.position + Vector3.up, PlayerPosition.position - this.transform.position, out RaycastHit hit,
+                                FireDistance + 10) && hit.collider.tag == "Player")
+            {
+                //Indicar que esta siguiendo al jugador
+                IsFollowing = true;
+            }
         }
         //Si ya lo estaba siguiendo
         else
@@ -71,17 +71,17 @@ public class Enemigo : MonoBehaviour
             Follow();
         }
     }
+
     //--------------------------------------------------------------------------
-    void Follow()
+    private void Follow()
     {
         //Apuntar al jugador
         Tower.LookAt(GameObject.Find("Cannon").transform.position);
         //Recargar Balas
         if (Reload < Reload_Time)
             Reload += Time.deltaTime;
-        //Si el jugador esta en la mira 
-        RaycastHit hit;
-        if (Physics.Raycast(this.transform.position+Vector3.up, PlayerPosition.position - this.transform.position, out hit, FireDistance + 10)
+        //Si el jugador esta en la mira
+        if (Physics.Raycast(this.transform.position + Vector3.up, PlayerPosition.position - this.transform.position, out RaycastHit hit, FireDistance + 10)
             && hit.collider.tag == "Player")
         {
             //Seguir al jugador
@@ -94,38 +94,44 @@ public class Enemigo : MonoBehaviour
         }
         //Si pierde al jugador va al ultimo lugar que lo vio
         else
+        {
             OutOfSight();
+        }
     }
+
     //----------------------------------------------------------------------
-    void OutOfSight()
+    private void OutOfSight()
     {
         //Ir al ultimo lugar que vio al jugador
         Navigation.SetDestination(LastSeen);
         //Cuando llega al lugar
         if (Vector3.Distance(this.transform.position, LastSeen) <= StopDistance)
-        { 
+        {
             //Indicar que ya no lo esta siguiendo
             IsFollowing = false;
         }
     }
+
     //------------------------------------------------------------------------
-    void Attack()
+    private void Attack()
     {
         //Si no esta recargando disparar
         if (Reload >= Reload_Time)
         {
             //Sonido de disparo
-            this.GetComponent<AudioSource>().Play();   
+            this.GetComponent<AudioSource>().Play();
             //Disparar
             Instantiate(Bala, Tower.position, Tower.rotation);
             //Recargar
             if (Reload_Time != 5)
+            {
                 Reload = 0;
+            }
             //El jefe dispara varias veces
             else if (Shots <= 3)
             {
                 Reload = 4;
-                Shots += 1;
+                Shots++;
             }
             //y luego recarga
             else
@@ -135,20 +141,22 @@ public class Enemigo : MonoBehaviour
             }
         }
     }
+
     //----------------------------------------------------------------------
-    void OnTriggerEnter(Collider c)
+    private void OnTriggerEnter(Collider c)
     {
         //Si le disparan muere
         if (c.CompareTag("BalaJ"))
             Death();
     }
+
     //----------------------------------------------------------------------
-    void Death()
+    private void Death()
     {
         //Aumentar puntos
         GameObject.Find("Game").GetComponent<GameManager>().AddScore(ScoreValue);
         //Destruir tanque
-        GameObject.Find("Game").GetComponent<GameManager>().EnemyCount -= 1;
+        GameObject.Find("Game").GetComponent<GameManager>().EnemyCount--;
         Destroy(this.gameObject);
     }
 }

@@ -1,39 +1,41 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class BalasE : MonoBehaviour 
+public class BalasE : MonoBehaviour
 {
     public Type BulletType;
     public GameObject Explosion;
-    public enum Type {NORMAL, SNIPER, BOSS};
 
-	void Update () 
-	{
+    public enum Type
+    { NORMAL, SNIPER, BOSS };
+
+    private void Update()
+    {
         //tipo de bala
-	    switch (BulletType)
+        switch (BulletType)
         {
-        //bala normal
-        case Type.NORMAL:
-            {
-                transform.Translate(Vector3.forward * 20 * Time.deltaTime);
-                break;
-            }
-        //bala de sniper
-        case Type.SNIPER:
-            {
-                transform.Translate(Vector3.forward * 35 * Time.deltaTime);
-                break;
-            }
-        //bala de jefe
-        case Type.BOSS:
-            {
+            //bala normal
+            case Type.NORMAL:
+                {
+                    transform.Translate(Vector3.forward * 20 * Time.deltaTime);
+                    break;
+                }
+            //bala de sniper
+            case Type.SNIPER:
+                {
+                    transform.Translate(Vector3.forward * 35 * Time.deltaTime);
+                    break;
+                }
+            //bala de jefe
+            case Type.BOSS:
+                {
                     transform.Translate(Vector3.forward * 40 * Time.deltaTime);
-                break;
-            }
+                    break;
+                }
         }
-	}
+    }
+
     //---------------------------------------------------------------------------
-    void OnTriggerEnter(Collider c)
+    private void OnTriggerEnter(Collider c)
     {
         //si choca con la pared se destruye
         if (c.CompareTag("Obstaculo"))

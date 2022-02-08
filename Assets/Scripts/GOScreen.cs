@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class GOScreen : MonoBehaviour {
-
-
-	void Update () 
-	{
-		if (Input.GetKey (KeyCode.Space)) 
-		{
-			Time.timeScale = 1;
-			Application.LoadLevel(0);
-		}
-	}
-
+public class GOScreen : MonoBehaviour
+{
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Time.timeScale = 1;
+            Application.LoadLevel(0);
+        }
+    }
 }

@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class PowerUP : MonoBehaviour 
+public class PowerUP : MonoBehaviour
 {
     private Transform[] SpawnPoint;
     private float Timer;
 
-    void Start()
+    private void Start()
     {
         SpawnPoint = new Transform[2];
         SpawnPoint[0] = GameObject.Find("Campo/Spawn point").transform;
         SpawnPoint[1] = GameObject.Find("Campo/Spawn point 3").transform;
     }
+
     //---------------------------------------------------------------------------------------------------------------------
-	void Update () 
-	{
+    private void Update()
+    {
         this.transform.LookAt(GameObject.Find("Cannon").transform.position);
         Timer += Time.deltaTime;
 
@@ -23,9 +23,10 @@ public class PowerUP : MonoBehaviour
             GameObject.Find("Game").GetComponent<GameManager>().PowerUpCount -= 1;
             Destroy(this.gameObject);
         }
-	}
+    }
+
     //------------------------------------------------------------------------------------------------------------------------
-    void OnTriggerEnter(Collider c)
+    private void OnTriggerEnter(Collider c)
     {
         if (c.CompareTag("Obstaculo"))
         {

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -9,14 +7,15 @@ public class Menu : MonoBehaviour
 
     private bool menu = true;
 
-    void Start()
+    private void Start()
     {
         Time.timeScale = 0;
         TScore.fontSize = 20;
         TScore.text = "Highscore: " + PlayerPrefs.GetInt("highscore", 0);
     }
+
     //-----------------------------------------------------------------------------------------------
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.Space) && menu)
         {
@@ -29,4 +28,3 @@ public class Menu : MonoBehaviour
         }
     }
 }
-     

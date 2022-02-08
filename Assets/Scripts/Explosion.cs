@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Explosion : MonoBehaviour 
+public class Explosion : MonoBehaviour
 {
     private float Death_Timer;
 
-	void Update () 
-	{
+    private void Update()
+    {
         if (Death_Timer >= 2)
+        {
             Destroy(this.gameObject);
+        }
         else
+        {
             Death_Timer += Time.deltaTime;
-	
-	}
+        }
+    }
 }

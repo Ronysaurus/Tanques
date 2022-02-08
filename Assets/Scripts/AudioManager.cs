@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class AudioManager : MonoBehaviour 
+public class AudioManager : MonoBehaviour
 {
     private bool Music = true;
-	void Start () 
-	{
-        this.GetComponent<AudioSource>().Play();   
-	}
+
+    private void Start()
+    {
+        this.GetComponent<AudioSource>().Play();
+    }
+
     //----------------------------------------------------------
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
